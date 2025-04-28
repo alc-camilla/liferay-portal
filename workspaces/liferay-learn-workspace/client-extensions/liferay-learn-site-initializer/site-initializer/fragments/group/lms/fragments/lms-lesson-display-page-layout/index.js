@@ -16,9 +16,7 @@ copyToClipboardButtons.forEach((button) => {
 
 			if (codeElement) {
 				navigator.clipboard
-					.writeText(
-						codeElement.innerText
-					)
+					.writeText(codeElement.innerText)
 					.then(() => {
 						button.setAttribute('data-copy-state', 'copy-success');
 					})
