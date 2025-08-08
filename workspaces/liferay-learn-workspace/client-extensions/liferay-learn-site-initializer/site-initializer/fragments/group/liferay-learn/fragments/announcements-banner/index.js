@@ -46,9 +46,5 @@ document.addEventListener('DOMContentLoaded', () => {
 		);
 
 		sessionStorage.setItem(BANNER_CLOSED_SESSION_KEY, 'true');
-
-		const navigationContainer = document.querySelector(
-			'.navigation-container'
-		);
 	});
 });
