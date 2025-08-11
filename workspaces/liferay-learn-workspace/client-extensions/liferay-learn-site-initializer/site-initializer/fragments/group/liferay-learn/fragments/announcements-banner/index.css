@@ -14,7 +14,6 @@
 		radial-gradient(100% 300% at 0% 100%, #009CFF 0%, #0001A5 36.46%, #0069FF 75.52%, #00E0FF 100%);
 	color: var(--color-neutral-0, '#ffffff');
 	display: flex;
-	display: none;
 	font-family: var(--font-family-sans-serif, 'Source Sans 3');
 	font-size: 1rem;
 	font-weight: 600;
@@ -24,6 +23,7 @@
 	position: fixed;
 	width: 100%;
 	z-index: 100;
+	display: none;
 
 	&::after {
 		bottom: -10px;
@@ -75,15 +75,15 @@
 	border: 1px solid #0B5FFF;
 	border-radius: 6px;
 	color: #0B5FFF !important;
-	font-family: var(--font-family-sans-serif, 'Source Sans 3');
-	font-size: 1rem;
-	font-weight: 600;
 	height: 50%;
 	margin-left: 10px;
 	overflow: hidden;
 	padding: 5px;
 	white-space: nowrap;
 	width: 10%;
+	font-family: var(--font-family-sans-serif, 'Source Sans 3');
+	font-size: 1rem;
+	font-weight: 600;
 }
 
 @media(max-width: 581px) {
@@ -100,10 +100,10 @@
 
 			&::after {
 				height: 10px;
-				position: absolute;
-				right: 14.5%;
-				top: 58%;
 				width: 10px;
+				position: absolute;
+				top: 58%;
+				right: 14.5%;
 			}
 		}
 	}
