@@ -1,0 +1,9 @@
+.documentation-grid {
+	>div {
+		row-gap: 2rem;
+
+		>div {
+			align-items: center;
+		}
+	}
+}
