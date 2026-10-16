@@ -32,11 +32,14 @@ public interface AssetStatisticsResource {
 		return new Builder();
 	}
 
-	public AssetStatistics getAssetStatistics(Long assetLibraryId)
+	public AssetStatistics getAssetStatistics(
+			Long assetLibraryId, Integer expiringSoonDays,
+			Integer upcomingReviewDays)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse getAssetStatisticsHttpResponse(
-			Long assetLibraryId)
+			Long assetLibraryId, Integer expiringSoonDays,
+			Integer upcomingReviewDays)
 		throws Exception;
 
 	public static class Builder {
@@ -148,11 +151,14 @@ public interface AssetStatisticsResource {
 	public static class AssetStatisticsResourceImpl
 		implements AssetStatisticsResource {
 
-		public AssetStatistics getAssetStatistics(Long assetLibraryId)
+		public AssetStatistics getAssetStatistics(
+				Long assetLibraryId, Integer expiringSoonDays,
+				Integer upcomingReviewDays)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				getAssetStatisticsHttpResponse(assetLibraryId);
+				getAssetStatisticsHttpResponse(
+					assetLibraryId, expiringSoonDays, upcomingReviewDays);
 
 			String content = httpResponse.getContent();
 
@@ -214,7 +220,8 @@ public interface AssetStatisticsResource {
 		}
 
 		public HttpInvoker.HttpResponse getAssetStatisticsHttpResponse(
-				Long assetLibraryId)
+				Long assetLibraryId, Integer expiringSoonDays,
+				Integer upcomingReviewDays)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -243,6 +250,16 @@ public interface AssetStatisticsResource {
 					"assetLibraryId", String.valueOf(assetLibraryId));
 			}
 
+			if (expiringSoonDays != null) {
+				httpInvoker.parameter(
+					"expiringSoonDays", String.valueOf(expiringSoonDays));
+			}
+
+			if (upcomingReviewDays != null) {
+				httpInvoker.parameter(
+					"upcomingReviewDays", String.valueOf(upcomingReviewDays));
+			}
+
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port + _builder._contextPath +
@@ -268,4 +285,4 @@ public interface AssetStatisticsResource {
 	}
 
 }
-// LIFERAY-REST-BUILDER-HASH:563747107
+// LIFERAY-REST-BUILDER-HASH:-636128249

@@ -52,6 +52,14 @@ public abstract class BaseAssetStatisticsResourceImpl
 			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
 				name = "assetLibraryId"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "expiringSoonDays"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "upcomingReviewDays"
 			)
 		}
 	)
@@ -67,7 +75,13 @@ public abstract class BaseAssetStatisticsResourceImpl
 	public AssetStatistics getAssetStatistics(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@jakarta.ws.rs.QueryParam("assetLibraryId")
-			Long assetLibraryId)
+			Long assetLibraryId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@jakarta.ws.rs.QueryParam("expiringSoonDays")
+			Integer expiringSoonDays,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@jakarta.ws.rs.QueryParam("upcomingReviewDays")
+			Integer upcomingReviewDays)
 		throws Exception {
 
 		return new AssetStatistics();
@@ -518,4 +532,4 @@ public abstract class BaseAssetStatisticsResourceImpl
 		LogFactoryUtil.getLog(BaseAssetStatisticsResourceImpl.class);
 
 }
-// LIFERAY-REST-BUILDER-HASH:1513266990
+// LIFERAY-REST-BUILDER-HASH:1961608649
