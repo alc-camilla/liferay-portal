@@ -282,6 +282,7 @@ public class AssetStatisticsResourceTest
 		_testGetAssetStatisticsByAssetLibrary();
 		_testGetAssetStatisticsMissingRequiredFieldsCount();
 		_testGetAssetStatisticsSLABreachedWorkflowTasksCount();
+		_testGetAssetStatisticsWithDays();
 		_testGetAssetStatisticsWithFreeTier();
 		_testGetAssetStatisticsWorkflowTasksCounts();
 	}
@@ -438,6 +439,28 @@ public class AssetStatisticsResourceTest
 			Assert.assertEquals(
 				expectedBrokenLinksCount,
 				GetterUtil.getLong(assetStatistics.getBrokenLinksCount()));
+		}
+	}
+
+	private void _assertExpiringSoonAndUpcomingReviewCounts(
+			Long assetLibraryId, Integer expiringSoonDays,
+			Integer upcomingReviewDays, long expectedExpiringSoonCount,
+			long expectedUpcomingReviewCount)
+		throws Exception {
+
+		for (AssetStatisticsResource assetStatisticsResource :
+				_assetStatisticsResources) {
+
+			AssetStatistics assetStatistics =
+				assetStatisticsResource.getAssetStatistics(
+					assetLibraryId, expiringSoonDays, upcomingReviewDays);
+
+			Assert.assertEquals(
+				expectedExpiringSoonCount,
+				GetterUtil.getLong(assetStatistics.getExpiringSoonCount()));
+			Assert.assertEquals(
+				expectedUpcomingReviewCount,
+				GetterUtil.getLong(assetStatistics.getUpcomingReviewCount()));
 		}
 	}
 
@@ -924,6 +947,47 @@ public class AssetStatisticsResourceTest
 
 		_depotEntryLocalService.deleteDepotEntry(depotEntry1.getDepotEntryId());
 		_depotEntryLocalService.deleteDepotEntry(depotEntry2.getDepotEntryId());
+	}
+
+	private void _testGetAssetStatisticsWithDays() throws Exception {
+		DepotEntry depotEntry = _addSpaceDepotEntry(
+			ServiceContextTestUtil.getServiceContext());
+
+		try {
+			ObjectDefinition objectDefinition =
+				_getCMSBasicWebContentObjectDefinition();
+
+			Date date = new Date();
+
+			ObjectEntry objectEntry1 = _addObjectEntry(
+				depotEntry, objectDefinition);
+
+			objectEntry1.setExpirationDate(
+				new Date(date.getTime() + (10 * Time.DAY)));
+
+			_objectEntryLocalService.updateObjectEntry(objectEntry1);
+
+			ObjectEntry objectEntry2 = _addObjectEntry(
+				depotEntry, objectDefinition);
+
+			objectEntry2.setReviewDate(
+				new Date(date.getTime() + (20 * Time.DAY)));
+
+			_objectEntryLocalService.updateObjectEntry(objectEntry2);
+
+			_assertExpiringSoonAndUpcomingReviewCounts(
+				depotEntry.getGroupId(), null, null, 0, 0);
+			_assertExpiringSoonAndUpcomingReviewCounts(
+				depotEntry.getGroupId(), 15, null, 1, 0);
+			_assertExpiringSoonAndUpcomingReviewCounts(
+				depotEntry.getGroupId(), null, 30, 0, 1);
+			_assertExpiringSoonAndUpcomingReviewCounts(
+				depotEntry.getGroupId(), 1, 365, 0, 1);
+		}
+		finally {
+			_depotEntryLocalService.deleteDepotEntry(
+				depotEntry.getDepotEntryId());
+		}
 	}
 
 	private void _testGetAssetStatisticsWithFreeTier() throws Exception {
