@@ -10,6 +10,7 @@ import com.liferay.depot.constants.DepotConstants;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryLocalService;
 import com.liferay.headless.cms.client.dto.v1_0.AssetStatistics;
+import com.liferay.headless.cms.client.http.HttpInvoker;
 import com.liferay.headless.cms.client.resource.v1_0.AssetStatisticsResource;
 import com.liferay.headless.cms.resource.v1_0.test.util.CMSFreeTierTestUtil;
 import com.liferay.headless.cms.resource.v1_0.test.util.CMSOutboundLinkTestUtil;
@@ -284,6 +285,7 @@ public class AssetStatisticsResourceTest
 		_testGetAssetStatisticsSLABreachedWorkflowTasksCount();
 		_testGetAssetStatisticsWithDays();
 		_testGetAssetStatisticsWithFreeTier();
+		_testGetAssetStatisticsWithInvalidDays();
 		_testGetAssetStatisticsWorkflowTasksCounts();
 	}
 
@@ -462,6 +464,24 @@ public class AssetStatisticsResourceTest
 				expectedUpcomingReviewCount,
 				GetterUtil.getLong(assetStatistics.getUpcomingReviewCount()));
 		}
+	}
+
+	private void _assertInvalidDays(
+			Integer expiringSoonDays, Integer upcomingReviewDays,
+			String parameterName)
+		throws Exception {
+
+		HttpInvoker.HttpResponse httpResponse =
+			assetStatisticsResource.getAssetStatisticsHttpResponse(
+				null, expiringSoonDays, upcomingReviewDays);
+
+		assertHttpResponseStatusCode(400, httpResponse);
+
+		String content = httpResponse.getContent();
+
+		Assert.assertTrue(
+			content,
+			content.contains(parameterName + " must be between 1 and 365"));
 	}
 
 	private void _assertMissingRequiredFieldsCount(
@@ -997,6 +1017,13 @@ public class AssetStatisticsResourceTest
 				assetStatisticsResource.getAssetStatisticsHttpResponse(
 					null, null, null));
 		}
+	}
+
+	private void _testGetAssetStatisticsWithInvalidDays() throws Exception {
+		_assertInvalidDays(0, null, "expiringSoonDays");
+		_assertInvalidDays(366, null, "expiringSoonDays");
+		_assertInvalidDays(null, 0, "upcomingReviewDays");
+		_assertInvalidDays(null, 366, "upcomingReviewDays");
 	}
 
 	private void _testGetAssetStatisticsWorkflowTasksCounts() throws Exception {
