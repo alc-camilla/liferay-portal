@@ -386,7 +386,8 @@ public class AssetStatisticsResourceTest
 				_assetStatisticsResources) {
 
 			AssetStatistics assetStatistics =
-				assetStatisticsResource.getAssetStatistics(assetLibraryId);
+				assetStatisticsResource.getAssetStatistics(
+					assetLibraryId, null, null);
 
 			Assert.assertEquals(
 				expectedApprovedCount,
@@ -431,7 +432,8 @@ public class AssetStatisticsResourceTest
 				_assetStatisticsResources) {
 
 			AssetStatistics assetStatistics =
-				assetStatisticsResource.getAssetStatistics(assetLibraryId);
+				assetStatisticsResource.getAssetStatistics(
+					assetLibraryId, null, null);
 
 			Assert.assertEquals(
 				expectedBrokenLinksCount,
@@ -447,7 +449,8 @@ public class AssetStatisticsResourceTest
 				_assetStatisticsResources) {
 
 			AssetStatistics assetStatistics =
-				assetStatisticsResource.getAssetStatistics(assetLibraryId);
+				assetStatisticsResource.getAssetStatistics(
+					assetLibraryId, null, null);
 
 			Assert.assertEquals(
 				expectedMissingRequiredFieldsCount,
@@ -464,7 +467,8 @@ public class AssetStatisticsResourceTest
 				_assetStatisticsResources) {
 
 			AssetStatistics assetStatistics =
-				assetStatisticsResource.getAssetStatistics(assetLibraryId);
+				assetStatisticsResource.getAssetStatistics(
+					assetLibraryId, null, null);
 
 			Assert.assertEquals(
 				expectedSLABreachedWorkflowTasksCount,
@@ -482,7 +486,8 @@ public class AssetStatisticsResourceTest
 				_assetStatisticsResources) {
 
 			AssetStatistics assetStatistics =
-				assetStatisticsResource.getAssetStatistics(assetLibraryId);
+				assetStatisticsResource.getAssetStatistics(
+					assetLibraryId, null, null);
 
 			Assert.assertEquals(
 				expectedOverdueWorkflowTasksCount,
@@ -925,7 +930,8 @@ public class AssetStatisticsResourceTest
 		try (AutoCloseable autoCloseable = CMSFreeTierTestUtil.withFreeTier()) {
 			assertHttpResponseStatusCode(
 				400,
-				assetStatisticsResource.getAssetStatisticsHttpResponse(null));
+				assetStatisticsResource.getAssetStatisticsHttpResponse(
+					null, null, null));
 		}
 	}
 

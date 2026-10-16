@@ -599,7 +599,7 @@ public class MissingRequiredFieldsAssetResourceTest
 
 		AssetStatistics assetStatistics =
 			assetStatisticsResource.getAssetStatistics(
-				depotEntry.getDepotEntryId());
+				depotEntry.getDepotEntryId(), null, null);
 
 		Assert.assertEquals(
 			missingRequiredFieldsAssetsPage.getTotalCount(),
