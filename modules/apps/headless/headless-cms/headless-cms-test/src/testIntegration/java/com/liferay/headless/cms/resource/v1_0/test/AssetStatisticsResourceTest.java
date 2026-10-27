@@ -445,9 +445,9 @@ public class AssetStatisticsResourceTest
 	}
 
 	private void _assertExpiringSoonAndUpcomingReviewCounts(
-			Long assetLibraryId, Integer expiringSoonDays,
-			Integer upcomingReviewDays, long expectedExpiringSoonCount,
-			long expectedUpcomingReviewCount)
+			Long assetLibraryId, long expectedExpiringSoonCount,
+			long expectedUpcomingReviewCount, Integer expiringSoonDays,
+			Integer upcomingReviewDays)
 		throws Exception {
 
 		for (AssetStatisticsResource assetStatisticsResource :
@@ -467,8 +467,8 @@ public class AssetStatisticsResourceTest
 	}
 
 	private void _assertInvalidDays(
-			Integer expiringSoonDays, Integer upcomingReviewDays,
-			String parameterName)
+			Integer expiringSoonDays, String parameterName,
+			Integer upcomingReviewDays)
 		throws Exception {
 
 		HttpInvoker.HttpResponse httpResponse =
@@ -480,7 +480,6 @@ public class AssetStatisticsResourceTest
 		String content = httpResponse.getContent();
 
 		Assert.assertTrue(
-			content,
 			content.contains(parameterName + " must be between 1 and 365"));
 	}
 
@@ -996,13 +995,13 @@ public class AssetStatisticsResourceTest
 			_objectEntryLocalService.updateObjectEntry(objectEntry2);
 
 			_assertExpiringSoonAndUpcomingReviewCounts(
-				depotEntry.getGroupId(), 1, 365, 0, 1);
+				depotEntry.getGroupId(), 0, 0, null, null);
 			_assertExpiringSoonAndUpcomingReviewCounts(
-				depotEntry.getGroupId(), 15, null, 1, 0);
+				depotEntry.getGroupId(), 0, 1, 1, 365);
 			_assertExpiringSoonAndUpcomingReviewCounts(
-				depotEntry.getGroupId(), null, 30, 0, 1);
+				depotEntry.getGroupId(), 0, 1, null, 30);
 			_assertExpiringSoonAndUpcomingReviewCounts(
-				depotEntry.getGroupId(), null, null, 0, 0);
+				depotEntry.getGroupId(), 1, 0, 15, null);
 		}
 		finally {
 			_depotEntryLocalService.deleteDepotEntry(
@@ -1020,10 +1019,10 @@ public class AssetStatisticsResourceTest
 	}
 
 	private void _testGetAssetStatisticsWithInvalidDays() throws Exception {
-		_assertInvalidDays(0, null, "expiringSoonDays");
-		_assertInvalidDays(366, null, "expiringSoonDays");
-		_assertInvalidDays(null, 0, "upcomingReviewDays");
-		_assertInvalidDays(null, 366, "upcomingReviewDays");
+		_assertInvalidDays(0, "expiringSoonDays", null);
+		_assertInvalidDays(366, "expiringSoonDays", null);
+		_assertInvalidDays(null, "upcomingReviewDays", 0);
+		_assertInvalidDays(null, "upcomingReviewDays", 366);
 	}
 
 	private void _testGetAssetStatisticsWorkflowTasksCounts() throws Exception {
