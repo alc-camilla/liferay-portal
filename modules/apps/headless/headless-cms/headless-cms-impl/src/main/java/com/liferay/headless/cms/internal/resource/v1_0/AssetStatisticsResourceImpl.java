@@ -425,22 +425,22 @@ public class AssetStatisticsResourceImpl
 
 	private void _validateDays(Integer days, String parameterName) {
 		if ((days != null) &&
-			((days < _MINIMUM_DAYS) || (days > _MAXIMUM_DAYS))) {
+			((days < _DAYS_MINIMUM) || (days > _DAYS_MAXIMUM))) {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
-					parameterName, " must be between ", _MINIMUM_DAYS, " and ",
-					_MAXIMUM_DAYS));
+					parameterName, " must be between ", _DAYS_MINIMUM, " and ",
+					_DAYS_MAXIMUM));
 		}
 	}
+
+	private static final int _DAYS_MAXIMUM = 365;
+
+	private static final int _DAYS_MINIMUM = 1;
 
 	private static final int _EXPIRING_SOON_DAYS = 7;
 
 	private static final int _LONG_STANDING_DRAFT_DAYS = 30;
-
-	private static final int _MAXIMUM_DAYS = 365;
-
-	private static final int _MINIMUM_DAYS = 1;
 
 	private static final int _UPCOMING_REVIEW_DAYS = 7;
 
