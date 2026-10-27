@@ -996,13 +996,13 @@ public class AssetStatisticsResourceTest
 			_objectEntryLocalService.updateObjectEntry(objectEntry2);
 
 			_assertExpiringSoonAndUpcomingReviewCounts(
-				depotEntry.getGroupId(), null, null, 0, 0);
+				depotEntry.getGroupId(), 1, 365, 0, 1);
 			_assertExpiringSoonAndUpcomingReviewCounts(
 				depotEntry.getGroupId(), 15, null, 1, 0);
 			_assertExpiringSoonAndUpcomingReviewCounts(
 				depotEntry.getGroupId(), null, 30, 0, 1);
 			_assertExpiringSoonAndUpcomingReviewCounts(
-				depotEntry.getGroupId(), 1, 365, 0, 1);
+				depotEntry.getGroupId(), null, null, 0, 0);
 		}
 		finally {
 			_depotEntryLocalService.deleteDepotEntry(
