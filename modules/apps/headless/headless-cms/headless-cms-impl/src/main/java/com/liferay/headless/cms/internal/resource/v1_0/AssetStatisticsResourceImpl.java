@@ -111,11 +111,6 @@ public class AssetStatisticsResourceImpl
 			objectDefinitions, ObjectDefinition::getClassName, String.class);
 		Date date = new Date();
 
-		Date expiringSoonThresholdDate = _getThresholdDate(
-			date, expiringSoonDays, _EXPIRING_SOON_DAYS);
-		Date upcomingReviewThresholdDate = _getThresholdDate(
-			date, upcomingReviewDays, _UPCOMING_REVIEW_DAYS);
-
 		return new AssetStatistics() {
 			{
 				setApprovedCount(
@@ -139,7 +134,9 @@ public class AssetStatisticsResourceImpl
 							WorkflowConstants.STATUS_APPROVED
 						).and(
 							ObjectEntryTable.INSTANCE.expirationDate.lte(
-								expiringSoonThresholdDate)
+								_getThresholdDate(
+									date, expiringSoonDays,
+									_EXPIRING_SOON_DAYS))
 						)));
 				setInDraftCount(
 					() -> _getCount(
@@ -203,7 +200,9 @@ public class AssetStatisticsResourceImpl
 							date
 						).and(
 							ObjectEntryTable.INSTANCE.reviewDate.lte(
-								upcomingReviewThresholdDate)
+								_getThresholdDate(
+									date, upcomingReviewDays,
+									_UPCOMING_REVIEW_DAYS))
 						).and(
 							ObjectEntryTable.INSTANCE.status.in(
 								CMSWorkflowConstants.STATUSES)
